@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: erro-formulario-confuso
+expected_outcome: |
+  O erro passa a aparecer dentro do formulário, perto do campo, sem sumir sozinho, com texto que explica o que corrigir e um exemplo de valor; o campo fica marcado com aria-invalid e recebe foco; a mudança é verificada.
+context:
+  scaffold_script: place-files.sh

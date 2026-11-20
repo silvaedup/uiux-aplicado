@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: melhora-ux-geral
+expected_outcome: |
+  O gastos.html é editado: exclusão ganha Desfazer em vez de confirm, erros aparecem no formulário ligados ao campo com mensagem que diz o que fazer, botão de excluir fica com área de toque de pelo menos 24px, campos ganham rótulo visível, e a resposta traz uma tabela de mudanças com princípio e verificação.
+context:
+  scaffold_script: place-files.sh

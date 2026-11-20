@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gastos</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; background: #fff; color: #222; }
+  main { max-width: 640px; margin: 0 auto; padding: 16px 16px 120px; }
+  form { display: grid; gap: 8px; }
+  input { padding: 8px; border: 1px solid #ccc; border-radius: 6px; }
+  ul { list-style: none; padding: 0; }
+  li { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; }
+  .valor { color: #999; }
+  .neg { color: #e66; }
+  .del { width: 16px; height: 16px; font-size: 10px; padding: 0; border: 0; background: #eee; cursor: pointer; }
+  .help { font-size: 11px; color: #aaa; }
+  footer { position: fixed; bottom: 0; left: 0; right: 0; background: #333; color: #fff; padding: 24px 16px; }
+  #msg { position: fixed; top: 8px; right: 8px; background: #222; color: #fff; padding: 8px; display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Meus gastos</h1>
+  <form id="novo">
+    <input name="desc" placeholder="Descrição">
+    <input name="valor" placeholder="Valor">
+    <button>Salvar</button>
+  </form>
+  <ul id="lista"></ul>
+</main>
+<footer>Total: <span id="total"></span></footer>
+<div id="msg"></div>
+<script>
+  let gastos = JSON.parse(localStorage.getItem("gastos") || "[]");
+  const fmt = (v) => "R$ " + v.toFixed(2).replace(".", ",");
+  function aviso(t) { const m = document.getElementById("msg"); m.textContent = t; m.style.display = "block"; setTimeout(() => m.style.display = "none", 2000); }
+  function render() {
+    const ul = document.getElementById("lista");
+    ul.innerHTML = "";
+    if (!gastos.length) ul.innerHTML = "<li>Nada.</li>";
+    gastos.forEach((g, i) => {
+      const li = document.createElement("li");
+      li.innerHTML = `<span>${g.desc}</span><span class="valor ${g.valor < 0 ? "neg" : ""}">${fmt(g.valor)}</span><button class="del" onclick="apagar(${i})">x</button>`;
+      ul.appendChild(li);
+    });
+    document.getElementById("total").textContent = fmt(gastos.reduce((s, g) => s + g.valor, 0));
+    localStorage.setItem("gastos", JSON.stringify(gastos));
+  }
+  function apagar(i) { if (confirm("Tem certeza?")) { gastos.splice(i, 1); render(); } }
+  document.getElementById("novo").onsubmit = (e) => {
+    e.preventDefault();
+    const f = e.target;
+    const v = parseFloat(f.valor.value);
+    if (!f.desc.value || isNaN(v)) { aviso("Erro!"); return; }
+    gastos.push({ desc: f.desc.value, valor: v });
+    f.reset(); render();
+  };
+  render();
+</script>
+</body>
+</html>

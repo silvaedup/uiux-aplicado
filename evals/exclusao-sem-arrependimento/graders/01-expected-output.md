@@ -1,0 +1,7 @@
+---
+type: llm
+focus: trace
+weight: 1
+---
+
+The result matches this description: A exclusão deixa de usar confirm() e passa a esconder o item com um aviso Desfazer por alguns segundos; desfazer restaura o item e só sem desfazer ele é removido de fato do localStorage; o aviso é acessível (role status ou aria-live) e o foco é tratado.
